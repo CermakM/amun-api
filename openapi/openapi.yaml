@@ -299,7 +299,7 @@ components:
                   type: string
                   minLength: 1
                   description: CPU Memory requested at build time.
-                  example: 256Mi
+                  example: 512Mi
                 hardware:
                   type: object
                   description: Set hardware requirements for build time.
