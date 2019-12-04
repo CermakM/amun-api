@@ -247,7 +247,7 @@ components:
     InspectionSpecification:
       type: object
       description: Specification of software stack for inspection.
-      additionalProperties: true
+      additionalProperties: {}
       required:
         - base
       properties:
@@ -304,11 +304,11 @@ components:
               description: >-
                 Pipfile stating software stack (direct dependencies) of an
                 application.
-              additionalProperties: true
+              additionalProperties: {}
             requirements_locked:
               type: object
               description: Pipfile.lock with fully pinned down and resolved software stack.
-              additionalProperties: true
+              additionalProperties: {}
         identifier:
           type: string
           description: >-
