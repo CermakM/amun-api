@@ -21,6 +21,9 @@ import logging
 import random
 import json
 
+from deprecated.sphinx import deprecated
+from deprecated.sphinx import versionchanged
+
 from thoth.common import OpenShift
 from thoth.common import WorkflowManager
 from thoth.common import datetime2datetime_str
@@ -117,6 +120,10 @@ def _adjust_default_requests(dict_: dict) -> None:
     dict_['requests'] = new_requests
 
 
+@versionchanged(
+    version="0.6.0",
+    reason="The function now submits an Argo Workflow."
+)
 def post_inspection(specification: dict) -> tuple:
     """Create new inspection for the given software stack."""
     # Generate first Dockerfile so we do not end up with an empty imagestream if Dockerfile creation fails.
@@ -175,9 +182,9 @@ def post_inspection(specification: dict) -> tuple:
     )
 
     if "allowed_failures" in specification:
-        workflow_parameters["allowed-failures"] = specification["allowed-failures"]
+        workflow_parameters["allowed-failures"] = specification["allowed_failures"]
     if "batch_size" in specification:
-        workflow_parameters["batch-size"] = specification["batch-size"]
+        workflow_parameters["batch-size"] = specification["batch_size"]
     if "parallelism" in specification:
         workflow_parameters["parallelism"] = specification["parallelism"]
 
@@ -201,6 +208,13 @@ def post_inspection(specification: dict) -> tuple:
     }, 202
 
 
+@deprecated(
+    version="0.6.0",
+    reason=(
+        "The function will be removed soon."
+        "The functionality is limited to a single inspection, i.e. `batch_size = 1`."
+    )
+)
 def get_inspection_job_log(inspection_id: str) -> tuple:
     """Get logs of the given inspection."""
     parameters = {'inspection_id': inspection_id}
@@ -248,6 +262,10 @@ def get_inspection_job_log(inspection_id: str) -> tuple:
     }, 200
 
 
+@versionchanged(
+    version="0.6.0",
+    reason="The function no longer retrieves logs from an existing pod."
+)
 def get_inspection_build_log(inspection_id: str) -> tuple:
     """Get build log of an inspection."""
     parameters = {'inspection_id': inspection_id}
@@ -269,6 +287,10 @@ def get_inspection_build_log(inspection_id: str) -> tuple:
     }, 200
 
 
+@versionchanged(
+    version="0.6.0",
+    reason="The function now returns the Workflow status."
+)
 def get_inspection_status(inspection_id: str) -> tuple:
     """Get status of an inspection."""
     parameters = {'inspection_id': inspection_id}
@@ -306,6 +328,10 @@ def get_inspection_status(inspection_id: str) -> tuple:
     }, 200
 
 
+@versionchanged(
+    version="0.6.0",
+    reason="The function no longer retrieves specification from an existing BuildConfig."
+)
 def get_inspection_specification(inspection_id: str):
     """Get specification for the given build."""
     parameters = {'inspection_id': inspection_id}
