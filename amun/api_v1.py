@@ -262,6 +262,7 @@ def get_inspection_job_log(inspection_id: str) -> tuple:
     }, 200
 
 
+# TODO: Retrieve build logs from the result API
 @versionchanged(
     version="0.6.0",
     reason="The function no longer retrieves logs from an existing pod."
@@ -287,6 +288,7 @@ def get_inspection_build_log(inspection_id: str) -> tuple:
     }, 200
 
 
+# TODO: Return a Workflow status instead of a pod status
 @versionchanged(
     version="0.6.0",
     reason="The function now returns the Workflow status."
@@ -328,6 +330,7 @@ def get_inspection_status(inspection_id: str) -> tuple:
     }, 200
 
 
+# TODO: Retrieve inspection specification from the Workflow parameters
 @versionchanged(
     version="0.6.0",
     reason="The function no longer retrieves specification from an existing BuildConfig."
