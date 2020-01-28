@@ -276,14 +276,22 @@ def get_inspection_build_log(inspection_id: str) -> tuple:
     }, 200
 
 
-# TODO: Return a Workflow status instead of a pod status
-@versionchanged(
-    version="0.6.0",
-    reason="The function now returns the Workflow status."
-)
 def get_inspection_status(inspection_id: str) -> tuple:
     """Get status of an inspection."""
     parameters = {'inspection_id': inspection_id}
+
+    workflow_status = None
+    try:
+        wf: Dict[str, Any] = _OPENSHIFT.get_workflow(
+            label_selector=f"inspection_id={inspection_id}",
+            namespace=_OPENSHIFT.amun_inspection_namespace
+        )
+        workflow_status = wf["status"]
+    except NotFoundException as exc:
+        return {
+            'error': 'A Workflow for the given inspection id as not found',
+            'parameters': parameters
+        }
 
     build_status = None
     try:
@@ -312,6 +320,7 @@ def get_inspection_status(inspection_id: str) -> tuple:
         pass
 
     return {
+        'workflow': workflow_status,
         'build': build_status,
         'job': job_status,
         'parameters': parameters
